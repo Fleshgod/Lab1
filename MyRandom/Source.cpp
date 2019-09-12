@@ -3,12 +3,12 @@
 
 using namespace std;
 
-size_t n = 1000000;
+size_t n = 100000;
 
-void PrintGistogram(double* Arr, double from, double to, double step) {
+void PrintGistogram(double* Arr, double from, double to, double step, unsigned int m) {
 	if (from == 0) {
 		for (size_t i = 0; i < n; i++)
-			Arr[i] = Arr[i] / 2147483647 * to;
+			Arr[i] = Arr[i] / m * to;
 
 		unsigned int counter = 0;
 		for (double i = from; i <= to - step; i += step) {
@@ -22,6 +22,14 @@ void PrintGistogram(double* Arr, double from, double to, double step) {
 	else {
 
 	}
+}
+
+unsigned int findReversal(unsigned int x, unsigned int m) {
+	unsigned int i = 1;
+	if (x == 0) x += 1;
+	while (((x*i) % m != 1) && (x < m))
+		i++;
+	return i;
 }
 
 unsigned int Random1(unsigned int seed) {
@@ -51,21 +59,25 @@ unsigned int Random3(unsigned int seed1, unsigned int seed2) {
 	return (seed1 + seed2) % m;
 }
 
+unsigned int Random4(unsigned int seed) {
+	unsigned int m = 10007;
+	unsigned int c = 382;
+	unsigned int a = 1025;
+	seed %= m;
 
+	return (a*findReversal(seed, m) + c) % m;
+}
 
 int main() {
-	double* Arr = new double[n];
-	Arr[0] = Random1(time(NULL));
-	Arr[1] = Random1(Arr[0]);
 
-	for (size_t i = 2; i < n; i++) {
-		Arr[i] = Random3(Arr[i-2], Arr[i-1]);
-		cout << Arr[i]/ 2147483647 << endl;
+	double* Arr = new double[n];
+	Arr[0] = time(NULL);
+
+	for (size_t i = 1; i < n; i++) {
+		Arr[i] = Random4(Arr[i-1]);
 	}
 
-	PrintGistogram(Arr, 0, 1, 0.1);
-
-	delete[] Arr;
+	PrintGistogram(Arr, 0, 1, 0.1, 10007);
 
 	system("pause");
 	return 0;
