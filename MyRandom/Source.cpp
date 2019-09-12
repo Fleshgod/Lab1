@@ -68,16 +68,25 @@ unsigned int Random4(unsigned int seed) {
 	return (a*findReversal(seed, m) + c) % m;
 }
 
+unsigned int Random5(unsigned int x, unsigned int y) {
+	unsigned int m = 2147483647;
+	
+	return (x - y) % m;
+}
+
 int main() {
-
 	double* Arr = new double[n];
-	Arr[0] = time(NULL);
+	srand(time(NULL));
+	unsigned int x = rand();
+	unsigned int y = rand();
 
-	for (size_t i = 1; i < n; i++) {
-		Arr[i] = Random4(Arr[i-1]);
+	for (size_t i = 0; i < n; i++) {
+		Arr[i] = Random5(x, y);
+		x = Random1(x);
+		y = Random2(y);
 	}
 
-	PrintGistogram(Arr, 0, 1, 0.1, 10007);
+	PrintGistogram(Arr, 0, 1, 0.1, 2147483647);
 
 	system("pause");
 	return 0;
