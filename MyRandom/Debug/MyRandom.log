@@ -1,0 +1,4 @@
+﻿  Source.cpp
+e:\vs projects\лабораторные работы (2 курс)\myrandom\myrandom\source.cpp(39): warning C4244: =: преобразование "time_t" в "double", возможна потеря данных
+e:\vs projects\лабораторные работы (2 курс)\myrandom\myrandom\source.cpp(42): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+  MyRandom.vcxproj -> E:\VS Projects\Лабораторные работы (2 курс)\MyRandom\Debug\MyRandom.exe
