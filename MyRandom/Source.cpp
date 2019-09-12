@@ -43,15 +43,24 @@ unsigned int Random2(unsigned int seed) {
 	return (d * seed * seed + a * seed + c) % m;
 }
 
+unsigned int Random3(unsigned int seed1, unsigned int seed2) {
+	unsigned int m = 2147483647;
+	seed1 %= m;
+	seed2 %= m;
+
+	return (seed1 + seed2) % m;
+}
+
 
 
 int main() {
 	double* Arr = new double[n];
-	Arr[0] = time(NULL);
+	Arr[0] = Random1(time(NULL));
+	Arr[1] = Random1(Arr[0]);
 
-	for (size_t i = 1; i < n; i++) {
-		Arr[i] = Random2(Arr[i - 1]);
-		//cout << Arr[i]/ 2147483647 << endl;
+	for (size_t i = 2; i < n; i++) {
+		Arr[i] = Random3(Arr[i-2], Arr[i-1]);
+		cout << Arr[i]/ 2147483647 << endl;
 	}
 
 	PrintGistogram(Arr, 0, 1, 0.1);
