@@ -21,6 +21,12 @@ void PrintGistogram(double* Arr, double from, double to, double step, unsigned i
 	}
 	else {
 		if ((from < 0) && (to > 0))  {
+			if (m != 1) {
+				for (size_t i = 0; i < n; i++)
+					Arr[i] = Arr[i] / m * to;
+			}
+			
+
 			unsigned int counter = 0;
 			for (double i = from; i <= to - step + step/100; i += step) {
 				for (size_t j = 0; j < n; j++)
