@@ -103,14 +103,33 @@ double Random6(unsigned int seed) {
 	return sum - 6;
 }
 
+double* Random7(unsigned int seed) {
+	unsigned int m = 2147483647;           //random1 m like
+	double u1, u2, v1, v2, s;
+	double arr[2];
+	while (1) {
+		u1 = double(seed) / double(m);
+		u2 = double(Random1(seed)) / double(m);
+		v1 = 2 * u1 - 1;
+		v2 = 2 * u2 - 1;
 
+		s = v1 * v1 + v2 * v2;
+		if (s < 1)
+			break;
 
+		seed = Random1(seed);
+	}
+	arr[0] = v1 * sqrt(-2 * log(s) / s);
+	arr[1] = v2 * sqrt(-2 * log(s) / s);
 
+	
+
+	return arr;
+}
 
 double Random8(unsigned int seed) {
 	unsigned int m = 2147483647;           //Random1 m like
 	while (1) {
-		seed = Random1(seed);
 		double U = double(seed) / double(m);
 		while (U == 0)
 			seed = rand();
@@ -118,22 +137,31 @@ double Random8(unsigned int seed) {
 
 		if (x*x <= -4 * log(U))
 			return x;
+
+		seed = Random1(seed);
 	}
 }
 
 int main() {
+	if (n % 2 != 0)
+		n += 1;
+	
 	double* Arr = new double[n];
 	srand(time(NULL));
+
 	unsigned int x = rand();
 
-	for (size_t i = 0; i < n; i++) {
-		Arr[i] = Random8(x);
+	for (size_t i = 0; i < n; i += 2) {
+		Arr[i] = Random7(x)[0];
+		Arr[i + 1] = Random7(x)[1];
 		x = Random2(x);
-		//cout << Arr[i] << endl;
+		//cout << Arr[i] << endl << Arr[i + 1] << endl;
 	}
 
 	PrintGistogram(Arr, -3, 3, 0.6, 1);
 
+	delete[] Arr;
 	system("pause");
+
 	return 0;
 }
