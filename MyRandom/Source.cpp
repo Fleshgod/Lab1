@@ -3,7 +3,7 @@
 
 using namespace std;
 
-size_t n = 100000;
+size_t n = 1000000;
 
 void PrintGistogram(double* Arr, double from, double to, double step, unsigned int m) {
 	if (from == 0) {
@@ -20,7 +20,16 @@ void PrintGistogram(double* Arr, double from, double to, double step, unsigned i
 		}
 	}
 	else {
-
+		if ((from < 0) && (to > 0))  {
+			unsigned int counter = 0;
+			for (double i = from; i <= to - step + step/100; i += step) {
+				for (size_t j = 0; j < n; j++)
+					if ((Arr[j] >= i) && (Arr[j] <= i + step))
+						counter++;
+				cout << '[' << i << ';' << i + step << "]\t" << double(counter) / n * 100 << endl;
+				counter = 0;
+			}
+		}
 	}
 }
 
@@ -74,19 +83,29 @@ unsigned int Random5(unsigned int x, unsigned int y) {
 	return (x - y) % m;
 }
 
+double Random6(unsigned int seed) {
+	double sum = 0; //Random1 m like
+	unsigned int m = 2147483647; // R
+	for (size_t i = 0; i < 12; i++){
+		seed = Random1(seed);
+		sum += double(seed) / double(m);
+	}
+
+	return sum - 6;
+}
+
 int main() {
 	double* Arr = new double[n];
 	srand(time(NULL));
 	unsigned int x = rand();
-	unsigned int y = rand();
 
 	for (size_t i = 0; i < n; i++) {
-		Arr[i] = Random5(x, y);
-		x = Random1(x);
-		y = Random2(y);
+		Arr[i] = Random6(x);
+		x = Random2(x);
+		//cout << Arr[i] << endl;
 	}
 
-	PrintGistogram(Arr, 0, 1, 0.1, 2147483647);
+	PrintGistogram(Arr, -3, 3, 0.6, 1);
 
 	system("pause");
 	return 0;
