@@ -1,5 +1,8 @@
+#define _USE_MATH_DEFINES
+
 #include <iostream>
 #include <ctime>
+#include <cmath>
 
 using namespace std;
 
@@ -90,8 +93,8 @@ unsigned int Random5(unsigned int x, unsigned int y) {
 }
 
 double Random6(unsigned int seed) {
-	double sum = 0; //Random1 m like
-	unsigned int m = 2147483647; // R
+	double sum = 0;
+	unsigned int m = 2147483647;          //Random1 m like
 	for (size_t i = 0; i < 12; i++){
 		seed = Random1(seed);
 		sum += double(seed) / double(m);
@@ -100,13 +103,31 @@ double Random6(unsigned int seed) {
 	return sum - 6;
 }
 
+
+
+
+
+double Random8(unsigned int seed) {
+	unsigned int m = 2147483647;           //Random1 m like
+	while (1) {
+		seed = Random1(seed);
+		double U = double(seed) / double(m);
+		while (U == 0)
+			seed = rand();
+		double x = sqrt(8 / M_E)*(double(Random1(seed)) / double(m) - 0.5) / U;
+
+		if (x*x <= -4 * log(U))
+			return x;
+	}
+}
+
 int main() {
 	double* Arr = new double[n];
 	srand(time(NULL));
 	unsigned int x = rand();
 
 	for (size_t i = 0; i < n; i++) {
-		Arr[i] = Random6(x);
+		Arr[i] = Random8(x);
 		x = Random2(x);
 		//cout << Arr[i] << endl;
 	}
