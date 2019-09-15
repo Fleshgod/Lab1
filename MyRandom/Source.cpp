@@ -130,17 +130,35 @@ double Random9(unsigned int seed) {
 	return -(mu*log(double(seed)/double(m)));
 }
 
+double Random10(unsigned int seed) {
+	unsigned int m = 2147483647; //Random2 m like
+	unsigned int a = 37;
+	double X, Y, V;
+	
+	do {
+		do {
+			Y = tan(M_PI*(double(seed) / double(m)));
+			X = sqrt(2 * a - 1)*Y + a - 1;
+			seed = Random2(seed);
+		} while (X <= 0);
+
+		V = double(Random1(seed)) / double(m);
+	} while (V > ((1 + Y * Y)*exp((a - 1)*log(X / (a - 1)) - sqrt(2 * a - 1)*Y)));
+
+	return X;
+}
+
 int main() {	
 	double* Arr = new double[n];
 	srand(time(NULL));
 	unsigned int x = rand();
 
 	for (size_t i = 0; i < n; i++) {
-		Arr[i] = Random9(x);
+		Arr[i] = Random10(x);
 		x = Random2(x);
 	}
 
-	PrintGistogram(Arr, 0, 100, 5, 1);
+	PrintGistogram(Arr, 0, 100, 10, 1);
 
 	system("pause");
 	return 0;
