@@ -9,36 +9,17 @@ using namespace std;
 size_t n = 1000000;
 
 void PrintGistogram(double* Arr, double from, double to, double step, unsigned int m) {
-	if (from == 0) {
+	if(m != 1)
 		for (size_t i = 0; i < n; i++)
-			Arr[i] = Arr[i] / m * to;
+			Arr[i] = Arr[i] / m;
 
-		unsigned int counter = 0;
-		for (double i = from; i <= to - step; i += step) {
-			for (size_t j = 0; j < n; j++)
-				if ((Arr[j] >= i) && (Arr[j] <= i + step))
-					counter++;
-			cout << '[' << i << ';' << i + step << "]\t" << double(counter) / n * 100 << endl;
-			counter = 0;
-		}
-	}
-	else {
-		if ((from < 0) && (to > 0))  {
-			if (m != 1) {
-				for (size_t i = 0; i < n; i++)
-					Arr[i] = Arr[i] / m * to;
-			}
-			
-
-			unsigned int counter = 0;
-			for (double i = from; i <= to - step + step/100; i += step) {
-				for (size_t j = 0; j < n; j++)
-					if ((Arr[j] >= i) && (Arr[j] <= i + step))
-						counter++;
-				cout << '[' << i << ';' << i + step << "]\t" << double(counter) / n * 100 << endl;
-				counter = 0;
-			}
-		}
+	unsigned int counter = 0;
+	for (double i = from; i <= to - step + step / 100; i += step) {
+		for (size_t j = 0; j < n; j++)
+			if ((Arr[j] >= i) && (Arr[j] <= i + step))
+				counter++;
+		cout << '[' << i << ';' << i + step << "]\t" << double(counter) / n * 100 << endl;
+		counter = 0;
 	}
 }
 
@@ -142,26 +123,25 @@ double Random8(unsigned int seed) {
 	}
 }
 
-int main() {
-	if (n % 2 != 0)
-		n += 1;
+double Random9(unsigned int seed) {
+	unsigned int m = 2147483647; //Random2 m like
+	unsigned int mu = 14;
 	
+	return -(mu*log(double(seed)/double(m)));
+}
+
+int main() {	
 	double* Arr = new double[n];
 	srand(time(NULL));
-
 	unsigned int x = rand();
 
-	for (size_t i = 0; i < n; i += 2) {
-		Arr[i] = Random7(x)[0];
-		Arr[i + 1] = Random7(x)[1];
+	for (size_t i = 0; i < n; i++) {
+		Arr[i] = Random9(x);
 		x = Random2(x);
-		//cout << Arr[i] << endl << Arr[i + 1] << endl;
 	}
 
-	PrintGistogram(Arr, -3, 3, 0.6, 1);
+	PrintGistogram(Arr, 0, 100, 5, 1);
 
-	delete[] Arr;
 	system("pause");
-
 	return 0;
 }
